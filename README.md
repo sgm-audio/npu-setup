@@ -1,31 +1,34 @@
-# NPU setup — Qwen2.5-Coder-7B (Lemonade Desktop)
+# NPU setup notes: Qwen2.5-Coder-7B on Lemonade Desktop
 
-Use the **official Lemonade Desktop app** you already installed. No custom web app, no CLI wrapper scripts.
+My notes for running Qwen2.5-Coder-7B on the NPU of my laptop with AMD's Lemonade Desktop app. There's no code here, just the steps that worked for me.
 
 ## Machine
 
-- ASUS Vivobook 16 / **Ryzen AI 7 350** (XDNA2) + **Radeon 860M**
-- Lemonade Desktop already present (`%LOCALAPPDATA%\lemonade_server`)
-- **Vitis AI not required** for catalog Hybrid/NPU models
+- ASUS Vivobook 16, Ryzen AI 7 350 (XDNA2 NPU) with Radeon 860M iGPU, Windows
+- Lemonade Desktop installed (default location `%LOCALAPPDATA%\lemonade_server`)
+- Vitis AI isn't needed for the catalog Hybrid/NPU models
 
-## Desktop app steps
+## Steps
 
-1. Open **Lemonade** (desktop app), not a browser project in this repo.
-2. **Backends Manager** → install **Ryzen AI LLM** / NPU (`ryzenai-llm`) if it isn’t installed yet.
-3. Set NPU turbo (Admin terminal once):
+1. Open the Lemonade desktop app.
+2. In Backends Manager, install the Ryzen AI LLM / NPU backend (`ryzenai-llm`) if it isn't there yet.
+3. Set the NPU to turbo once, from an admin terminal:
 
    ```powershell
    cd C:\Windows\System32\AMD
    .\xrt-smi configure --pmode turbo
    ```
 
-4. In the app model list, download/run **`Qwen2.5-Coder-7B-Instruct-Hybrid`** (NPU prefill + iGPU decode).
-   - Fallback: **`Qwen2.5-Coder-7B-Instruct-NPU`**
+4. In the model list, download and run `Qwen2.5-Coder-7B-Instruct-Hybrid` (prefill on the NPU, decode on the iGPU). If that doesn't load, `Qwen2.5-Coder-7B-Instruct-NPU` is the NPU-only fallback.
 
-## Already done on this laptop
+## What I ran on my machine
 
-- `ryzenai-llm:npu` **v1.7.0** installed
-- NPU set to **turbo**
-- **Qwen2.5-Coder-7B-Instruct-Hybrid** downloaded and verified loadable
+- `ryzenai-llm:npu` v1.7.0
+- NPU power mode set to turbo
+- `Qwen2.5-Coder-7B-Instruct-Hybrid` downloaded and loaded
 
-Open the desktop app and select that model to chat. Done.
+I didn't measure tokens/s, so there are no speed numbers here. Other Ryzen AI chips or backend versions may behave differently.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
